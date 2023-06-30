@@ -70,5 +70,8 @@ def instagram_hashtag_engagement():
         print(f">>> Engaged: {counter}")
 
         timecounter(5)
-
+    
+    # Closing Active Post
+    driver.find_element(by=By.XPATH, value=xpaths.instagram_close_post).click()
+    
     print(">>> Engagement Completed.")
