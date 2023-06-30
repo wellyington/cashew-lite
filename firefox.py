@@ -44,7 +44,7 @@ def instagram_hashtag_engagement():
 
     # Opening First Post From The Hashtag Page
     driver.find_element(by=By.XPATH, value=xpaths.instagram_post).click()
-    timecounter(10)
+    timecounter(5)
 
     # Interating Engagements 
 
@@ -53,7 +53,7 @@ def instagram_hashtag_engagement():
         # Liking post
         driver.find_element(by=By.XPATH, value=xpaths.instagram_like).click()
 
-        timecounter(15)
+        timecounter(2)
 
         # Moving to The Next Post
         try: 
@@ -69,7 +69,7 @@ def instagram_hashtag_engagement():
 
         print(f">>> Engaged: {counter}")
 
-        timecounter(5)
+        timecounter(2)
     
     # Closing Active Post
     driver.find_element(by=By.XPATH, value=xpaths.instagram_close_post).click()
