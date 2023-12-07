@@ -2,6 +2,8 @@
 import sys
 import xpath
 from selenium import webdriver
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException, ElementClickInterceptedException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -40,6 +42,7 @@ def InstagramHashtagEngagement():
     
     # Opening Felected hashtag
     driver.get("https://www.instagram.com/explore/tags/" + hashtag)
+    actions = ActionChains(driver)
     timecounter(20)
 
     # Opening First Post From The Hashtag Page
@@ -51,18 +54,12 @@ def InstagramHashtagEngagement():
     while counter != int(limit):
 
         # Liking post
-        driver.find_element(by=By.XPATH, value=xpath.instagram_like).click()
+        actions.send_keys('l').perform()
 
         timecounter(2)
 
         # Moving to The Next Post
-        try: 
-            # Button to Move to The Next Post (All Posts but not First)
-            driver.find_element(by=By.XPATH, value=xpath.instagram_next2).click()
-        except:
-            # Button to Move to The Second Post (First post Only)
-            # This button will be clicked only once during execution
-            driver.find_element(by=By.XPATH, value=xpath.instagram_next1).click()
+        actions.send_keys(Keys.ARROW_RIGHT).perform()
         
         # Update Variable 'counter'
         counter = counter + 1
@@ -72,6 +69,6 @@ def InstagramHashtagEngagement():
         timecounter(2)
     
     # Closing Active Post
-    driver.find_element(by=By.XPATH, value=xpath.instagram_close_post).click()
+    actions.send_keys(Keys.ESCAPE).perform()
     
     print(">>> Engagement Completed.")
