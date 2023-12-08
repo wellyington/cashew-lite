@@ -33,6 +33,8 @@ def instagram():
 	
 def InstagramHashtagEngagement():
     
+    url = driver.current_url
+
     # Set variable counter to 0 : Will be used to count engagements!
     counter = 0
 
@@ -53,20 +55,50 @@ def InstagramHashtagEngagement():
 
     while counter != int(limit):
 
+        # Capturing Picture's URL Address
+        url = driver.current_url
+
+        # Resolving & Capturing Username
+        try:
+            username = driver.find_element(by=By.XPATH, value=xpath.instagram_username1).text
+        except:
+            try:
+                username = driver.find_element(by=By.XPATH, value=xpath.instagram_username2).text
+            except:
+                username = driver.find_element(by=By.XPATH, value=xpath.instagram_username3).text
+
         # Liking post
-        actions.send_keys('l').perform()
+        try:
 
-        timecounter(2)
+            # Check if SVG with arial-label Unlike is TRUE
 
-        # Moving to The Next Post
-        actions.send_keys(Keys.ARROW_RIGHT).perform()
-        
-        # Update Variable 'counter'
-        counter = counter + 1
+            svg_element = driver.find_element(By.XPATH, "//*[name()='svg' and @aria-label='Unlike']")
+            aria_label = svg_element.get_attribute("aria-label")
+            print("--------------------------------------")
 
-        print(f">>> Engaged: {counter}")
+            if aria_label == "Unlike":
+                print("POST LIKED - MOVE NEXT")
+                print("--------------------------------------")
+                actions.send_keys(Keys.ARROW_RIGHT).perform()
+                timecounter(2)
+            
+        except:
+            print(url)
+            print(username)
+            print("--------------------------------------")
+            actions.send_keys('l').perform()
 
-        timecounter(2)
+            timecounter(2)
+
+            # Moving to The Next Post
+            actions.send_keys(Keys.ARROW_RIGHT).perform()
+            
+            # Update Variable 'counter'
+            counter = counter + 1
+
+            print(f">>> Engaged: {counter}")
+
+            timecounter(2)
     
     # Closing Active Post
     actions.send_keys(Keys.ESCAPE).perform()
