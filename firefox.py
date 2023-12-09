@@ -38,9 +38,12 @@ def InstagramHashtagEngagement():
     # Set variable counter to 0 : Will be used to count engagements!
     counter = 0
 
-    # Collection Hastag
+    # Collect Hastag
     hashtag = input(">>> Select 1 Hashtag: #")
-    limit = input(">>> How many posts would you like to interact with: ")
+
+    # Instagram has recently limited the Hashtag search on web browsers, displaying only 28 posts when you look up on a specifc Hashtag!
+    # This function has been set to engage with 20 posts by default.
+    limit = 20
     
     # Opening Felected hashtag
     driver.get("https://www.instagram.com/explore/tags/" + hashtag)
@@ -70,7 +73,7 @@ def InstagramHashtagEngagement():
         # Liking post
         try:
 
-            # Check if SVG with arial-label Unlike is TRUE
+            # Check if a SVG element with arial-label='Unlike' is TRUE
 
             svg_element = driver.find_element(By.XPATH, "//*[name()='svg' and @aria-label='Unlike']")
             aria_label = svg_element.get_attribute("aria-label")
@@ -79,7 +82,12 @@ def InstagramHashtagEngagement():
             if aria_label == "Unlike":
                 print("POST LIKED - MOVE NEXT")
                 print("--------------------------------------")
+                
+                # Moving to The Next Post
                 actions.send_keys(Keys.ARROW_RIGHT).perform()
+
+                # Update Variable 'counter'
+                counter = counter + 1
                 timecounter(2)
             
         except:
