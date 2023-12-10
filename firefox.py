@@ -11,9 +11,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
+import sqlite3
 from time import sleep
 from getpass import getpass
-from func_timer import timecounter
+import datetime
+from func_timer import timecounter, rSec
+
+# Create a SQLite database connection
+conn = sqlite3.connect('cashew.db')
+cursor = conn.cursor()
 
 # Starting webdriver // FireFox
 
@@ -32,6 +38,18 @@ def instagram():
 # Instagram Engagement Function by Hashtag
 	
 def InstagramHashtagEngagement():
+
+    # Create the emails table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS InstagramHashtagEngagement (
+        ID INTEGER PRIMARY KEY AUTOINCREMENT,
+        handle TEXT,
+        url TEXT,
+        hashtag TEXT,
+        date TEXT,
+        time TEXT
+    )
+    ''')
     
     url = driver.current_url
 
@@ -48,17 +66,21 @@ def InstagramHashtagEngagement():
     # Opening Felected hashtag
     driver.get("https://www.instagram.com/explore/tags/" + hashtag)
     actions = ActionChains(driver)
-    timecounter(20)
+    timecounter(rSec)
 
     # Opening First Post From The Hashtag Page
     driver.find_element(by=By.XPATH, value=xpath.instagram_post).click()
-    timecounter(5)
+    timecounter(rSec)
 
     # Interating Engagements 
 
     while counter != int(limit):
 
-        # Capturing Picture's URL Address
+        dateTime = datetime.datetime.now()
+        dateNow = str(dateTime.date())
+        timeNow = str(dateTime.strftime("%X"))
+
+        # Capturing post's URL Address
         url = driver.current_url
 
         # Resolving & Capturing Username
@@ -88,15 +110,23 @@ def InstagramHashtagEngagement():
 
                 # Update Variable 'counter'
                 counter = counter + 1
-                timecounter(2)
+                timecounter(rSec)
             
         except:
-            print(url)
-            print(username)
+            
+            # Best POS for SQL execution HERE
+
+            dataSet = (username, url, hashtag, dateNow, timeNow)
+            cursor.execute("INSERT INTO InstagramHashtagEngagement (handle, url, hashtag, date, time) VALUES (?, ?, ?, ?, ?)", dataSet)
+            conn.commit()
+            print("Data Saved ---------------------------")
+            print(f"Handle: {username}")
+            print(f"Post's URL: {url}")
+            print(f"Date: {dateNow} - Time {timeNow}")
             print("--------------------------------------")
             actions.send_keys('l').perform()
 
-            timecounter(2)
+            timecounter(rSec)
 
             # Moving to The Next Post
             actions.send_keys(Keys.ARROW_RIGHT).perform()
@@ -106,9 +136,15 @@ def InstagramHashtagEngagement():
 
             print(f">>> Engaged: {counter}")
 
-            timecounter(2)
+            timecounter(rSec)
     
     # Closing Active Post
     actions.send_keys(Keys.ESCAPE).perform()
     
     print(">>> Engagement Completed.")
+
+def InstagramExploreEngagement():
+
+    driver.get("https://www.instagram.com/explore/")
+    actions = ActionChains(driver)
+    timecounter(rSec)
