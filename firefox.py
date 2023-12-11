@@ -15,7 +15,10 @@ import sqlite3
 from time import sleep
 from getpass import getpass
 import datetime
-from func_timer import timecounter, rSec
+from func_timer import timecounter
+
+import random
+rSec = random.randint(2, 20)
 
 # Create a SQLite database connection
 conn = sqlite3.connect('cashew.db')

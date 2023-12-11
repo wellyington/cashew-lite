@@ -1,7 +1,5 @@
 from time import sleep
-import random
 
-rSec = random.randint(2, 20)
 
 def timecounter(seconds):
     while seconds:
