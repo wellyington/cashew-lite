@@ -18,7 +18,7 @@ import datetime
 from func_timer import timecounter
 
 import random
-rSec = random.randint(2, 20)
+rSec = random.randint(5, 20)
 
 # Create a SQLite database connection
 conn = sqlite3.connect('cashew.db')
@@ -93,7 +93,19 @@ def InstagramHashtagEngagement():
             try:
                 username = driver.find_element(by=By.XPATH, value=xpath.instagram_username2).text
             except:
-                username = driver.find_element(by=By.XPATH, value=xpath.instagram_username3).text
+                try:
+                    username = driver.find_element(by=By.XPATH, value=xpath.instagram_username3).text
+                except:
+                    try:
+                        username = driver.find_element(by=By.XPATH, value=xpath.instagram_username4).text
+                    except:
+                        try:
+                            username = driver.find_element(by=By.XPATH, value=xpath.instagram_username5).text
+                        except:
+                            try:
+                                username = driver.find_element(by=By.XPATH, value=xpath.instagram_username6).text
+                            except:
+                                username = driver.find_element(by=By.XPATH, value=xpath.instagram_username7).text
 
         # Liking post
         try:
